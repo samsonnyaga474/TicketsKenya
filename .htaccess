@@ -1,0 +1,3 @@
+# Fail closed when Apache is pointed at the project folder by mistake.
+# Configure the VirtualHost DocumentRoot to the project's public/ directory.
+Require all denied

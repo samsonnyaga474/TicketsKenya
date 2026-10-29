@@ -1,0 +1,42 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Databases and application data
+*.sqlite
+*.sqlite3
+*.db
+data/store.json
+data/.pesapal*
+data/*.lock
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.old
+*.cache
+
+# User uploads and generated files
+public/assets/uploads/
+uploads/
+
+# Dependencies and tooling
+vendor/
+node_modules/
+.cache/
+.DS_Store
+Thumbs.db
+
+# Git itself
+/work/sessions/
+# Local runtime and test files
+/work/
+
+# Local runtime and test files
+/work/

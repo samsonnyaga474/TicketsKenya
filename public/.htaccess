@@ -1,0 +1,17 @@
+# Apache / XAMPP rules (the PHP built-in server uses router.php instead).
+Require all granted
+Options -Indexes
+ErrorDocument 404 /404.php
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^sitemap\.xml$ sitemap.php [L]
+  RewriteRule ^robots\.txt$ robots.php [L]
+  # /events/<slug> -> event page (real files and folders are served as they are)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^events/([a-z0-9][a-z0-9-]*)/?$ events/view.php?slug=$1 [L,QSA]
+</IfModule>
+# Block dotfiles and data-like files if they ever land under public/
+<FilesMatch "^\.|\.(env|sqlite|sqlite3|json|log|sql|bak)$">
+  Require all denied
+</FilesMatch>

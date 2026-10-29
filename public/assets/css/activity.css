@@ -1,0 +1,56 @@
+/* Site Activity & Insights. Uses the site's own tokens (--ink --muted --line --panel --radius --lime). */
+.sa-consent { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 80; max-width: 760px; margin: 0 auto; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; box-shadow: 0 12px 40px rgba(0,0,0,.6); }
+.sa-consent p { margin: 0 0 12px; font-size: 14px; line-height: 1.55; color: var(--muted); }
+.sa-consent p strong { color: var(--ink); }
+.sa-consent a { color: var(--ink); text-decoration: underline; }
+.sa-consent-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.sa-choice-form { margin: 18px 0; max-width: 44rem; }
+.sa-choice-form .opt { margin-bottom: 8px; }
+.sa-actions { margin-top: 14px; }
+.sa-state { margin: 20px 0 6px; }
+.sa-muted { color: var(--muted); font-size: .85rem; margin: 6px 0 12px; line-height: 1.5; }
+
+.sa-subnav { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 18px 0 8px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.sa-subnav a { color: var(--muted); font-size: 14px; padding: 4px 0; border-bottom: 2px solid transparent; }
+.sa-subnav a:hover { color: var(--ink); }
+.sa-subnav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--lime); }
+.sa-range { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 14px 0 0; }
+.sa-range select, .sa-range input, .sa-form input, .sa-form select, .sa-form textarea { background: #111; color: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; font: inherit; font-size: 14px; }
+.sa-range .btn { padding: 10px 16px; }
+.sa-grid { display: grid; gap: 16px; margin: 18px 0; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+.sa-kpi { border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; background: #0c0d0d; display: flex; flex-direction: column; gap: 4px; }
+.sa-kpi-l { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+.sa-kpi strong { font-size: 1.7rem; font-weight: 700; line-height: 1.1; }
+.sa-kpi small { color: var(--muted); font-size: 12px; }
+.sa-cols { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .sa-cols { grid-template-columns: 1fr 1fr; } }
+.sa-panel { border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; background: #0c0d0d; margin: 0 0 16px; min-width: 0; }
+.sa-panel h2 { font-size: 1.05rem; margin: 0 0 6px; }
+.sa-panel .table-wrap { padding: 6px 0 0; }
+.sa-table table { font-size: .85rem; }
+.sa-bars { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
+.sa-bars li { display: grid; grid-template-columns: minmax(80px, 38%) 1fr auto; gap: 10px; align-items: center; font-size: .85rem; }
+.sa-bar-l { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sa-bar { background: rgba(255,255,255,.07); border-radius: 3px; height: 10px; overflow: hidden; }
+.sa-bar i { display: block; height: 100%; background: var(--lime); }
+.sa-bar-n { color: var(--muted); font-variant-numeric: tabular-nums; }
+.sa-form { display: grid; gap: 14px; max-width: 46rem; }
+.sa-form label { display: grid; gap: 6px; font-size: 14px; }
+.sa-form label small { color: var(--muted); }
+.sa-live { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); margin-right: 6px; }
+.sa-pager { display: flex; gap: 12px; align-items: center; margin: 8px 0 24px; }
+@media (max-width: 640px) { .sa-bars li { grid-template-columns: 1fr auto; } .sa-bars .sa-bar { grid-column: 1 / -1; order: 3; } }
+
+.sa-chart-wrap { overflow-x: auto; margin-top: 6px; }
+.sa-chart { width: 100%; min-width: 520px; height: auto; display: block; }
+.sa-chart .grid { stroke: var(--line); stroke-width: 1; }
+.sa-chart .axis { fill: var(--muted); font-size: 11px; }
+.sa-chart .bar { fill: var(--lime); opacity: .9; }
+.sa-chart .line { fill: none; stroke: var(--teal); stroke-width: 2; stroke-linejoin: round; }
+.sa-chart .dot { fill: var(--teal); }
+.sa-legend { color: var(--muted); font-size: .85rem; margin: 6px 0 0; }
+.sa-legend .k-bar, .sa-legend .k-line { display: inline-block; width: 12px; height: 10px; margin: 0 4px 0 12px; vertical-align: middle; }
+.sa-legend .k-bar { background: var(--lime); }
+.sa-legend .k-line { height: 3px; background: var(--teal); }
+.sa-details { margin-top: 10px; }
+.sa-details summary { cursor: pointer; color: var(--muted); font-size: .85rem; }

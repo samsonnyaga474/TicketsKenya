@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": "soldoutafrica-public-ics",
+      "name": "SoldOutAfrica public event calendar (iCalendar)",
+      "url": "https://soldoutafrica.com/events.ics",
+      "format": "ics",
+      "enabled": false,
+      "default_city": "Kenya",
+      "default_category": "Events & Entertainment",
+      "terms_url": "https://soldoutafrica.com/events",
+      "disabled_reason": "Enable only after written permission to republish these listings is obtained. Provider terms section 7 prohibits republishing website information without consent: https://soldoutafrica.com/terms"
+    }
+  ]
+}

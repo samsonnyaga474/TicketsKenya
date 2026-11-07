@@ -60,6 +60,11 @@ define('TK_APP_NAME', 'TicketsKenya');
 define('TK_APP_URL', getenv('TK_APP_URL') ?: 'http://localhost:8080');
 define('TK_ENV', getenv('TK_ENV') ?: 'development');
 
+// Behind a reverse proxy/tunnel (e.g. Cloudflare) set TK_TRUST_PROXY=true so
+// the Secure cookie flag and HTTPS detection work. The proxy MUST overwrite
+// the X-Forwarded-Proto header. Leave false unless HTTPS termination is external.
+define('TK_TRUST_PROXY', strtolower(trim((string)(getenv('TK_TRUST_PROXY') ?: 'false'))) === 'true');
+
 // Session
 define('TK_SESSION_NAME', 'tk_session');
 define('TK_SESSION_LIFETIME', 60 * 60 * 24 * 7); // 7 days
@@ -73,8 +78,8 @@ define('TK_LOGIN_WINDOW_SECONDS', 900); // 15 minutes
 // Database (SQLite for local simplicity; swap DSN for MySQL/Postgres later)
 define('TK_DB_PATH', TK_DATA . '/ticketskenya.sqlite');
 
-// Pesapal API 3.0 credentials (never hardcode; set via environment / .env)
-// PESAPAL_CONSUMER_KEY, PESAPAL_CONSUMER_SECRET, PESAPAL_NOTIFICATION_ID, PESAPAL_ENV=sandbox|live
+// Payment provider credentials (never hardcode; set via environment / .env)
+// No provider is integrated in this build; TK_PAYMENTS_ENABLED=false by default.
 
 
 // Service fee (TicketKenya platform fee on own inventory sales)

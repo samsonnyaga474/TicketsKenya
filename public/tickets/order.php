@@ -35,8 +35,8 @@ if ($status === 'paid' || $paymentStatus === 'paid') {
 $stageCopy = [
     'processing' => [
         'label' => 'Waiting for payment',
-        'description' => tk_pesapal_configured()
-            ? 'Your order is saved. Complete payment below to receive your ticket. Nothing is charged until payment is confirmed by Pesapal.'
+        'description' => tk_payments_available()
+            ? 'Your order is saved. Complete payment below to receive your ticket. Nothing is charged until payment is confirmed.'
             : 'Your order is saved. Online payment is not configured yet, so nothing has been charged and no ticket is issued.',
         'icon' => '…',
         'iconClass' => 'is-wait',
@@ -81,7 +81,7 @@ foreach ($lines as $line) {
 }
 $emailNotice = $isPaid
     ? 'Payment and ticket status are shown here. Email delivery is not configured, so this receipt and ticket have not been emailed.'
-    : 'No payment has been taken. Receipt and ticket emails are sent only after verified payment and mail delivery are configured.';
+    : 'No payment has been taken; email delivery is not configured, so receipt and ticket emails are sent only after verified payment and mail delivery are configured.';
 
 $pageTitle = 'Order #' . $id . ' | TicketsKenya';
 $noindex = true;
@@ -184,14 +184,14 @@ require dirname(__DIR__, 2) . '/templates/header.php';
   <?php endif; ?>
 
 
-  <?php if (!$isPaid && $stage === 'processing' && tk_pesapal_configured()): ?>
+  <?php if (!$isPaid && $stage === 'processing' && tk_payments_available()): ?>
   <section style="margin-top:2rem;max-width:28rem" aria-label="Pay for this order">
     <h2 style="font-size:1.1rem;margin:0 0 .75rem">Pay securely</h2>
-    <p style="margin:0 0 1rem;color:#ccc;font-size:.95rem">You will be redirected to Pesapal to complete payment with M-Pesa or card. Your ticket is issued only after Pesapal confirms the payment on our server.</p>
+    <p style="margin:0 0 1rem;color:#ccc;font-size:.95rem">You will be redirected to the payment page to complete payment with M-Pesa or card. Your ticket is issued only after the payment is confirmed on our server.</p>
     <form method="post" action="/payments/start.php">
       <?= tk_csrf_field() ?>
       <input type="hidden" name="order_id" value="<?= (int)$order['id'] ?>">
-      <button type="submit" class="btn btn-solid">Pay KES <?= number_format($amountDue) ?> with Pesapal</button>
+      <button type="submit" class="btn btn-solid">Pay KES <?= number_format($amountDue) ?></button>
     </form>
     <p style="margin:.75rem 0 0;font-size:.85rem;color:#999">After paying you will return here. If the page still shows pending, wait a few seconds and refresh — delayed M-Pesa confirmations are handled automatically.</p>
   </section>

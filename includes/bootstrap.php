@@ -11,6 +11,12 @@ require_once __DIR__ . '/events.php';
 require_once __DIR__ . '/layout.php';
 
 // Start secure session
+$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
+if (!$isHttps && TK_TRUST_PROXY) {
+    // Only honoured when the owner explicitly enables it; the proxy must
+    // overwrite X-Forwarded-Proto so a client cannot spoof it.
+    $isHttps = strtolower((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https';
+}
 if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.use_strict_mode', '1');
     ini_set('session.use_only_cookies', '1');
@@ -18,7 +24,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => TK_SESSION_LIFETIME,
         'path' => '/',
-        'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+        'secure' => $isHttps,
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -43,6 +49,8 @@ if (!headers_sent()) {
 }
 
 
+
+require_once __DIR__ . '/totp.php';
 
 // ---------- Security helpers ----------
 
@@ -146,6 +154,8 @@ function tk_require_role(string ...$roles): array
 function tk_login(int $userId): void
 {
     session_regenerate_id(true);
+    // Rotate the CSRF token on privilege change so a pre-login token cannot be replayed.
+    unset($_SESSION[TK_CSRF_TOKEN_NAME]);
     $_SESSION['user_id'] = $userId;
 }
 

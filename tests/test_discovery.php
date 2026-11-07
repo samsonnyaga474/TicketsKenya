@@ -127,5 +127,17 @@ $up = tk_events_query([]);
 check('listing excludes cancelled and flagged-but-published stays', !in_array('a-1', array_column($up, 'external_id'), true) && in_array('a-2', array_column($up, 'external_id'), true));
 
 echo "\n$pass passed, $fail failed\n";
-exec('rm -rf ' . escapeshellarg($tmp));
+// Cross-platform cleanup (no shell commands; works on Windows and Unix).
+$remove = static function (string $path) use (&$remove): void {
+    if (!file_exists($path)) return;
+    if (is_dir($path) && !is_link($path)) {
+        foreach (scandir($path) ?: [] as $entry) {
+            if ($entry !== '.' && $entry !== '..') $remove($path . DIRECTORY_SEPARATOR . $entry);
+        }
+        @rmdir($path);
+    } else {
+        @unlink($path);
+    }
+};
+$remove($tmp);
 exit($fail ? 1 : 0);

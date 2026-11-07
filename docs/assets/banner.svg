@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="460" viewBox="0 0 1600 460" role="img" aria-labelledby="bannerTitle bannerDesc">
+  <title id="bannerTitle">TicketsKenya</title>
+  <desc id="bannerDesc">Event discovery and ticketing for Kenya. Built with PHP and SQLite.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#070907"/>
+      <stop offset="0.55" stop-color="#0b1009"/>
+      <stop offset="1" stop-color="#060806"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#c6ff00" stop-opacity="0.22"/>
+      <stop offset="0.55" stop-color="#c6ff00" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#c6ff00" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lime" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d6ff3d"/>
+      <stop offset="1" stop-color="#a8e600"/>
+    </linearGradient>
+    <linearGradient id="ticketFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#11170d"/>
+      <stop offset="1" stop-color="#090c07"/>
+    </linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#c6ff00" stroke-opacity="0.055" stroke-width="1"/>
+    </pattern>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="460" rx="28" fill="url(#bg)"/>
+  <rect width="1600" height="460" rx="28" fill="url(#grid)"/>
+  <circle cx="1330" cy="98" r="250" fill="url(#glow)" filter="url(#soft)"/>
+  <circle cx="1500" cy="430" r="170" fill="url(#glow)" opacity="0.6" filter="url(#soft)"/>
+
+  <!-- brand mark -->
+  <g transform="translate(96 128)">
+    <rect width="58" height="58" rx="16" fill="url(#lime)"/>
+    <path d="M18 20.5h22a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H18a3 3 0 0 1-3-3v-11a3 3 0 0 1 3-3Z" fill="#070907"/>
+    <path d="M22 26.5h10M22 31.5h7" stroke="#c6ff00" stroke-width="2.4" stroke-linecap="round"/>
+    <circle cx="40" cy="31.5" r="2.4" fill="#c6ff00"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="176" y="174" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="64" font-weight="700" letter-spacing="-1.8" fill="#f4f7f2">Tickets<tspan fill="url(#lime)">Kenya</tspan></text>
+  <text x="178" y="218" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#a9b39f">Discover what is on. Sell what you create.</text>
+
+  <!-- stack chips -->
+  <g font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="600">
+    <g transform="translate(178 258)">
+      <rect width="104" height="36" rx="18" fill="#0d130a" stroke="#c6ff00" stroke-opacity="0.28"/>
+      <text x="52" y="23" text-anchor="middle" fill="#d9e4cd">PHP 8.1+</text>
+    </g>
+    <g transform="translate(294 258)">
+      <rect width="92" height="36" rx="18" fill="#0d130a" stroke="#c6ff00" stroke-opacity="0.28"/>
+      <text x="46" y="23" text-anchor="middle" fill="#d9e4cd">SQLite</text>
+    </g>
+    <g transform="translate(398 258)">
+      <rect width="120" height="36" rx="18" fill="#0d130a" stroke="#c6ff00" stroke-opacity="0.28"/>
+      <text x="60" y="23" text-anchor="middle" fill="#d9e4cd">Self-hosted</text>
+    </g>
+    <g transform="translate(530 258)">
+      <rect width="140" height="36" rx="18" fill="#0d130a" stroke="#c6ff00" stroke-opacity="0.28"/>
+      <text x="70" y="23" text-anchor="middle" fill="#d9e4cd">Zero build step</text>
+    </g>
+  </g>
+
+  <g font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="14" fill="#6f7a66">
+    <circle cx="184" cy="346" r="4" fill="#c6ff00"/>
+    <text x="198" y="351">Development build</text>
+    <text x="338" y="351">·</text>
+    <text x="356" y="351">Online payments intentionally disabled</text>
+  </g>
+
+  <!-- ticket artwork -->
+  <g transform="rotate(-7 1246 230)">
+    <rect x="1016" y="104" width="470" height="252" rx="26" fill="url(#ticketFill)" stroke="#c6ff00" stroke-opacity="0.30" stroke-width="1.5"/>
+    <rect x="1016" y="104" width="470" height="252" rx="26" fill="url(#glow)" opacity="0.35"/>
+    <path d="M1258 104v252" stroke="#c6ff00" stroke-opacity="0.28" stroke-width="1.5" stroke-dasharray="5 9"/>
+    <circle cx="1258" cy="104" r="17" fill="#070907"/>
+    <circle cx="1258" cy="356" r="17" fill="#070907"/>
+
+    <text x="1056" y="152" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="3.4" fill="#c6ff00">TICKETSKENYA</text>
+    <text x="1056" y="208" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="34" font-weight="700" letter-spacing="-0.8" fill="#f4f7f2">THE CULTURE</text>
+    <text x="1056" y="238" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="400" fill="#9aa693">Nairobi · 2026</text>
+
+    <g transform="translate(1056 272)">
+      <rect width="176" height="34" rx="8" fill="#c6ff00" fill-opacity="0.10" stroke="#c6ff00" stroke-opacity="0.22"/>
+      <text x="14" y="22" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" letter-spacing="1.6" fill="#d9e4cd">EVENT DISCOVERY</text>
+    </g>
+
+    <text x="1292" y="158" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="2.6" fill="#7f8c74">ADMIT ONE</text>
+    <g fill="#c6ff00">
+      <rect x="1292" y="176" width="4" height="96" fill-opacity="0.9"/>
+      <rect x="1302" y="176" width="2" height="96" fill-opacity="0.55"/>
+      <rect x="1310" y="176" width="6" height="96" fill-opacity="0.9"/>
+      <rect x="1322" y="176" width="2" height="96" fill-opacity="0.55"/>
+      <rect x="1330" y="176" width="4" height="96" fill-opacity="0.9"/>
+      <rect x="1340" y="176" width="7" height="96" fill-opacity="0.8"/>
+      <rect x="1353" y="176" width="2" height="96" fill-opacity="0.55"/>
+      <rect x="1361" y="176" width="5" height="96" fill-opacity="0.9"/>
+      <rect x="1372" y="176" width="3" height="96" fill-opacity="0.6"/>
+      <rect x="1381" y="176" width="6" height="96" fill-opacity="0.9"/>
+      <rect x="1393" y="176" width="2" height="96" fill-opacity="0.55"/>
+      <rect x="1401" y="176" width="4" height="96" fill-opacity="0.9"/>
+      <rect x="1411" y="176" width="7" height="96" fill-opacity="0.8"/>
+      <rect x="1424" y="176" width="2" height="96" fill-opacity="0.55"/>
+      <rect x="1432" y="176" width="5" height="96" fill-opacity="0.9"/>
+      <rect x="1443" y="176" width="3" height="96" fill-opacity="0.6"/>
+    </g>
+    <text x="1292" y="306" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" letter-spacing="2.2" fill="#6f7a66">NO. 2026-KE</text>
+  </g>
+
+  <!-- accent rail -->
+  <rect x="96" y="398" width="72" height="3" rx="1.5" fill="url(#lime)"/>
+  <text x="184" y="404" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="13" letter-spacing="1.8" fill="#55604d">EVENT DISCOVERY · TICKETING · ADMINISTRATION</text>
+</svg>

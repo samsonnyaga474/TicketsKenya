@@ -7,6 +7,7 @@
  *   php tools/ensure-owned-inventory.php
  */
 declare(strict_types=1);
+if (PHP_SAPI !== 'cli') { http_response_code(404); exit; }
 require_once dirname(__DIR__) . '/includes/bootstrap.php';
 
 function tk_parse_floor_price(?string $info): int

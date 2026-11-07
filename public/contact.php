@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (tk_strlen($old['message']) < 10 || tk_strlen($old['message']) > 3000) $errors['message'] = 'Write a message between 10 and 3000 characters.';
         if (!$errors && time() - (int)($_SESSION['last_contact'] ?? 0) < 30) $errors[] = 'Please wait a few seconds before sending another message.';
         if (!$errors) {
-            tk_repo_insert('contact_messages', ['name' => $old['name'], 'email' => $old['email'], 'subject' => $old['subject'], 'message' => $old['message'], 'ip_address' => (string)($_SERVER['REMOTE_ADDR'] ?? ''), 'created_at' => date('c'), 'handled' => 0]);
+            tk_repo_insert('contact_messages', ['name' => $old['name'], 'email' => $old['email'], 'subject' => $old['subject'], 'message' => $old['message'], 'ip_address' => tk_ip_prefix((string)($_SERVER['REMOTE_ADDR'] ?? '')), 'created_at' => date('c'), 'handled' => 0]);
             $_SESSION['last_contact'] = time();
             $sent = true; $old = array_map(fn() => '', $old);
         }

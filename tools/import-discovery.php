@@ -1,18 +1,26 @@
 <?php
 /**
- * Free local discovery importer (KSh 0)
+ * Local inventory importer (KSh 0)
  *
  * This script does NOT scrape restricted sites.
- * It reads a local JSON seed file (tools/discovery-seed.json)
- * and upserts discovery listings into the existing database.
+ * It reads a local JSON seed file (tools/discovery-seed.json) and upserts
+ * listings into the existing database.
+ *
+ * Current policy in the seed: imported listings are published as
+ * TicketsKenya-owned inventory ("sales stay on TicketsKenya") and each gets a
+ * ticket type when it has none. This is a business decision, not a technical
+ * one: only import events whose organisers have agreed, and review every row
+ * with `php tools/production-check.php` before launch.
  *
  * Usage (from project root):
  *   php tools/import-discovery.php
  *
- * Safe to run repeatedly — uses slug as unique key.
- * Does not touch owned events or order history.
+ * Safe to run repeatedly — matches by slug/identity, never deletes orders or
+ * existing ticket types. Use tools/reclassify-inventory.php to move listings
+ * back to discovery without deleting anything.
  */
 declare(strict_types=1);
+if (PHP_SAPI !== 'cli') { http_response_code(404); exit; }
 
 require_once dirname(__DIR__) . '/includes/bootstrap.php';
 

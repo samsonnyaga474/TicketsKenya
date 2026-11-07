@@ -1,7 +1,6 @@
-# Environment and secrets
+# Environment and secrets (never commit real values)
 .env
 .env.*
-!.env.example
 *.pem
 *.key
 *.p12
@@ -10,33 +9,39 @@
 # Databases and application data
 *.sqlite
 *.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
 *.db
-data/store.json
-data/.pesapal*
+data/*
+!data/.gitkeep
 data/*.lock
+data/*.log
+data/*.json.tmp
+
+# Backups and local working data
+/work/
+backups/
+*.bak
+*.old
 
 # Logs and temporary files
 *.log
 *.tmp
-*.bak
-*.old
 *.cache
 
-# User uploads and generated files
-public/assets/uploads/
-uploads/
+# User uploads, but keep the protective .htaccess part of the repository
+public/assets/uploads/*
+!public/assets/uploads/.htaccess
 
-# Dependencies and tooling
+# Test and tooling caches
+__pycache__/
+*.pyc
+.pytest_cache/
 vendor/
 node_modules/
 .cache/
+
+# Operating system files
 .DS_Store
 Thumbs.db
-
-# Git itself
-/work/sessions/
-# Local runtime and test files
-/work/
-
-# Local runtime and test files
-/work/

@@ -1,6 +1,7 @@
 <?php
 /**
- * Optional status poll page (customer can refresh). Re-queries Pesapal if needed.
+ * Payment status poll endpoint — disabled in this build.
+ * There is no provider to re-verify with; orders stay pending by default.
  */
 declare(strict_types=1);
 
@@ -17,11 +18,9 @@ if (!$order || (int)$order['user_id'] !== (int)$user['id']) {
     tk_redirect('/tickets/');
 }
 
-$tracking = (string)($order['provider_transaction_id'] ?? '');
-$ref = (string)($order['payment_reference'] ?? '');
-
-if ($tracking !== '' && tk_pesapal_configured()) {
-    tk_payment_verify_and_fulfil($orderId, $tracking, $ref !== '' ? $ref : null);
+if (!tk_payments_available()) {
+    $_SESSION['flash_error'] = 'Online payments are disabled on this site. Nothing has been charged.';
+    tk_redirect('/tickets/order.php?id=' . $orderId);
 }
 
 tk_redirect('/tickets/order.php?id=' . $orderId);

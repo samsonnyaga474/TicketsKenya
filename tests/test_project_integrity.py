@@ -9,7 +9,13 @@ def check(name, ok, detail=''):
     if not ok: failures.append(name)
 
 php = shutil.which('php')
-check('PHP CLI available', bool(php))
+if not php:
+    # Local XAMPP installs do not usually put php on PATH; look in common locations.
+    for candidate in (r'C:\xampp\php\php.exe', Path(ROOT).drive + r'\xampp\php\php.exe', '/usr/bin/php', '/usr/local/bin/php'):
+        if candidate and Path(candidate).is_file():
+            php = candidate
+            break
+check('PHP CLI available', bool(php), php or 'php not found on PATH or in common install paths')
 if php:
     php_files = list(ROOT.rglob('*.php'))
     syntax_ok = True
@@ -46,6 +52,28 @@ check('feed with republication restriction disabled by default', all(not s.get('
 check('sync log + source-based dedupe code present', 'discovery-sync-log.json' in (ROOT/'tools/sync-discovery.php').read_text(encoding='utf-8') and 'source_url' in (ROOT/'tools/import-discovery.php').read_text(encoding='utf-8'))
 discovery_admin = (ROOT/'public/admin/discovery.php').read_text(encoding='utf-8')
 check('sync history dashboard is admin-only', "tk_require_role('admin')" in discovery_admin and 'discovery-sync-log.json' in discovery_admin)
+
+# No obsolete payment-provider code anywhere in executable PHP.
+active_php = [p for p in ROOT.rglob('*.php') if '.git' not in p.parts]
+provider_hits = []
+for p in active_php:
+    text = p.read_text(encoding='utf-8', errors='ignore').lower()
+    if 'pesapal' in text or 'flutterwave' in text or 'paystack' in text:
+        provider_hits.append(str(p.relative_to(ROOT)))
+check('no obsolete payment-provider references in PHP', not provider_hits, ', '.join(provider_hits[:5]))
+
+uploads_htaccess = ROOT/'public/assets/uploads/.htaccess'
+check('upload folder denies PHP execution', uploads_htaccess.is_file() and 'php_flag engine off' in uploads_htaccess.read_text(encoding='utf-8') and 'Require all denied' in uploads_htaccess.read_text(encoding='utf-8'))
+check('uploads protection is not git-ignored', '!public/assets/uploads/.htaccess' in (ROOT/'.gitignore').read_text(encoding='utf-8'))
+
+ignore = (ROOT/'.gitignore').read_text(encoding='utf-8')
+check('gitignore protects env, databases and local work', all(x in ignore for x in ('.env', '*.sqlite', '/work/')))
+
+totp = ROOT/'includes/totp.php'
+login_page = (ROOT/'public/auth/login.php').read_text(encoding='utf-8')
+check('TOTP helper and two-step login present', totp.is_file() and 'tk_totp_verify' in login_page and 'pending_2fa' in login_page)
+check('2FA setup tool is CLI-only', "PHP_SAPI !== 'cli'" in (ROOT/'tools/setup-2fa.php').read_text(encoding='utf-8'))
+check('production/reclassify tools are CLI-only', all("PHP_SAPI !== 'cli'" in (ROOT/'tools'/name).read_text(encoding='utf-8') for name in ('production-check.php', 'reclassify-inventory.php')))
 
 if php:
     # Sandboxed Windows environments may deny Python's default AppData temp path.

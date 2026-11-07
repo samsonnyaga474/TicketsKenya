@@ -1,6 +1,6 @@
 <?php
 /**
- * Offline tests for payment helpers (no real Pesapal calls).
+ * Offline tests for payment helpers (no provider, no network calls).
  * Run: php tests/test_payments_logic.php
  */
 declare(strict_types=1);
@@ -25,13 +25,13 @@ function assert_true(bool $cond, string $msg): void
 
 echo "=== TicketsKenya payment logic tests (offline) ===\n";
 
-// Configured detection
-assert_true(tk_pesapal_configured() === false, 'pesapal not configured without env keys');
+// Payments are disabled by default (fail closed)
+assert_true(tk_payments_available() === false, 'payments unavailable without TK_PAYMENTS_ENABLED');
 
-// Merchant reference format
-$ref = tk_pesapal_merchant_reference(42);
-assert_true((bool)preg_match('/^TK-42-[A-F0-9]{8}$/i', $ref), 'merchant reference format TK-{id}-{hex}');
-assert_true(strlen($ref) <= 50, 'merchant reference length <= 50');
+putenv('TK_PAYMENTS_ENABLED=true');
+assert_true(tk_payments_available() === true, 'payments available when TK_PAYMENTS_ENABLED=true');
+putenv('TK_PAYMENTS_ENABLED=false');
+assert_true(tk_payments_available() === false, 'payments disabled when TK_PAYMENTS_ENABLED=false');
 
 // Ticket code uniqueness shape
 $c1 = tk_generate_ticket_code();
@@ -39,34 +39,8 @@ $c2 = tk_generate_ticket_code();
 assert_true(strlen($c1) === 16 && ctype_xdigit($c1), 'ticket code is 16 hex chars');
 assert_true($c1 !== $c2, 'ticket codes differ');
 
-// Base URL selection
-putenv('PESAPAL_ENV=sandbox');
-assert_true(str_contains(tk_pesapal_base_url(), 'cybqa.pesapal.com'), 'sandbox base URL');
-putenv('PESAPAL_ENV=live');
-assert_true(str_contains(tk_pesapal_base_url(), 'pay.pesapal.com'), 'live base URL');
-putenv('PESAPAL_ENV=sandbox');
-
-// Invalid tracking id rejected
-$threw = false;
-try {
-    tk_pesapal_get_status('not-a-uuid');
-} catch (InvalidArgumentException $e) {
-    $threw = true;
-} catch (Throwable $e) {
-    // may fail earlier on missing credentials
-    $threw = true;
-}
-assert_true($threw, 'invalid tracking id is rejected');
-
-// Order creation path still works (uses existing DB)
-$user = tk_repo_find('users', 'email', 'demo.customer@ticketskenya.local');
-$events = tk_repo_where('events', fn($e) => ($e['listing_type'] ?? '') === 'owned' || ($e['listing_type'] ?? '') === '');
-// If no owned events, just skip inventory test
-if ($user) {
-    assert_true(true, 'demo customer exists for order tests');
-} else {
-    assert_true(true, 'demo seed may be absent (ok)');
-}
+// Issue tickets is idempotent and safe on a non-existent order
+assert_true(tk_payment_issue_tickets(999999, 'no-txn', 'offline-test') === false, 'fulfilment fails closed for unknown order');
 
 echo "\nResult: $passed passed, $failed failed\n";
 exit($failed > 0 ? 1 : 0);

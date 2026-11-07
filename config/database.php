@@ -118,20 +118,26 @@ function tk_repo_delete(string $table, int $id): void {
     tk_json_save($store);
 }
 
+/** Shorten a network address to an IPv4 /24 or IPv6 /48 prefix; null when invalid. */
+function tk_ip_prefix(?string $ip): ?string {
+    $ip = trim((string)$ip);
+    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        $parts = explode('.', $ip);
+        return $parts[0] . '.' . $parts[1] . '.' . $parts[2] . '.0/24';
+    }
+    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        $packed = @inet_pton($ip);
+        if ($packed !== false) return inet_ntop(substr($packed, 0, 6) . str_repeat("\0", 10)) . '/48';
+    }
+    return null;
+}
+
 /** Store a small security signal without the submitted email, full URL, or raw IP. */
 function tk_security_log(string $kind, ?array $server = null): void {
     $allowed = ['login_failed', 'login_succeeded', 'login_rate_limited', 'login_csrf_rejected', 'activity_rate_limited', 'suspicious_request'];
     if (!in_array($kind, $allowed, true)) return;
     $server ??= $_SERVER;
-    $rawIp = (string)($server['REMOTE_ADDR'] ?? '');
-    $prefix = null;
-    if (filter_var($rawIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-        $parts = explode('.', $rawIp);
-        $prefix = $parts[0] . '.' . $parts[1] . '.' . $parts[2] . '.0/24';
-    } elseif (filter_var($rawIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-        $packed = @inet_pton($rawIp);
-        if ($packed !== false) $prefix = inet_ntop(substr($packed, 0, 6) . str_repeat("\0", 10)) . '/48';
-    }
+    $prefix = tk_ip_prefix((string)($server['REMOTE_ADDR'] ?? ''));
     $at = gmdate('Y-m-d H:i:s');
     try {
         $db = tk_db();
@@ -303,6 +309,12 @@ function tk_migrate_sqlite(): void {
 
     $db->exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_events_source_external ON events(source_id, external_id) WHERE source_id IS NOT NULL AND external_id IS NOT NULL");
     $db->exec("CREATE INDEX IF NOT EXISTS idx_events_starts ON events(starts_at)");
+
+    // Optional admin two-factor authentication (additive; existing accounts stay password-only until enrolled).
+    $userColumns = array_column($db->query('PRAGMA table_info(users)')->fetchAll(), 'name');
+    if (!in_array('totp_secret', $userColumns, true)) {
+        $db->exec('ALTER TABLE users ADD COLUMN totp_secret TEXT');
+    }
 
     // Ensure the local demo accounts exist even when upgrading an already-seeded database.
     // This block is never active in production unless explicitly misconfigured.
